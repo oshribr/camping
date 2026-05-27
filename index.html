@@ -229,7 +229,7 @@ function renderCat(){
   <div class="ilist">
     ${rows.length===0?'<div class="empty">אין פריטים</div>':rows.map(({item,i,s})=>`
       <div class="irow">
-        <span class="iname${s?" done":""}">${item}</span>
+        <span class="iname${s?" done":""} ">${item}</span>
         <div class="bdgs">
           <button class="bdg${s==="home"?" ah":""}" onclick="ss('${cat.id}',${i},'home')">בבית</button>
           <button class="bdg${s==="car"?" ac":""}" onclick="ss('${cat.id}',${i},'car')">באוטו</button>
@@ -255,6 +255,6 @@ function renderMenu(){
 loadFromHash();
 render();
 </script>
-<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js");}</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js");}</script>
 </body>
 </html>
