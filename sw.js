@@ -1,4 +1,4 @@
-const CACHE = "camping-v2";
+const CACHE = "camping-v3";
 const FILES = ["/camping/", "/camping/index.html", "/camping/manifest.json"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)));
