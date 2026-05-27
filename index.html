@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="קמפינג">
+<meta name="theme-color" content="#ffffff">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<title>ציוד קמפינג</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#ffffff;--bg2:#f5f4f0;--bg3:#eceae6;
+  --text:#1a1a1a;--text2:#6b6a66;--text3:#a09e9a;
+  --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.16);
+  --blue-bg:#E6F1FB;--blue-text:#0C447C;--blue-border:#85B7EB;
+  --green-bg:#EAF3DE;--green-text:#27500A;--green-border:#97C459;
+  --amber-bg:#FAEEDA;--amber-text:#633806;--amber-border:#EF9F27;
+  --r:12px;--rs:8px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#1a1a1a;--bg2:#242424;--bg3:#2e2e2e;
+    --text:#f0efeb;--text2:#9a9894;--text3:#5c5a57;
+    --border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.16);
+  }
+}
+html,body{height:100%;font-family:-apple-system,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);}
+#app{max-width:480px;margin:0 auto;min-height:100%;}
+
+.hdr{padding:16px 16px 13px;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;}
+.hdr-title{font-size:19px;font-weight:600;}
+.hdr-sub{font-size:12px;color:var(--text2);margin-bottom:12px;}
+.prog-row{display:flex;align-items:center;gap:10px;}
+.prog-lbl{font-size:12px;color:var(--text2);white-space:nowrap;}
+.prog-track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:3px;background:#378ADD;transition:width 0.35s ease;}
+.prog-pct{font-size:12px;font-weight:600;color:#185FA5;min-width:34px;text-align:left;}
+.tbtn{font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;font-family:inherit;}
+
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:12px;}
+.ccard{background:var(--bg2);border-radius:var(--r);padding:14px 12px 12px;border:0.5px solid var(--border);cursor:pointer;text-align:right;transition:background 0.12s;font-family:inherit;width:100%;}
+.ccard:active{background:var(--bg3);}
+.cicon{font-size:22px;margin-bottom:8px;display:block;}
+.cname{font-size:13px;font-weight:600;color:var(--text);margin-bottom:7px;}
+.cbar-t{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:5px;}
+.cbar-f{height:100%;border-radius:2px;transition:width 0.35s ease;}
+.ccnt{font-size:11px;color:var(--text2);}
+
+.ihdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;}
+.back{font-size:15px;color:#185FA5;background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 0;display:flex;align-items:center;gap:2px;}
+.ititle{font-size:16px;font-weight:600;}
+.icnt{font-size:12px;color:var(--text2);}
+
+.filters{display:flex;gap:6px;padding:10px 16px;border-bottom:0.5px solid var(--border);overflow-x:auto;}
+.filters::-webkit-scrollbar{display:none;}
+.fpill{font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;white-space:nowrap;font-family:inherit;}
+.fpill.on{background:var(--blue-bg);color:var(--blue-text);border-color:var(--blue-border);}
+
+.ilist{padding:4px 16px 60px;}
+.irow{display:flex;align-items:center;gap:8px;padding:12px 0;border-bottom:0.5px solid var(--border);}
+.irow:last-child{border-bottom:none;}
+.iname{flex:1;font-size:14px;color:var(--text);transition:color 0.2s;line-height:1.4;}
+.iname.done{color:var(--text3);}
+.bdgs{display:flex;gap:4px;flex-shrink:0;}
+.bdg{font-size:11px;padding:4px 8px;border-radius:20px;font-weight:500;border:0.5px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer;white-space:nowrap;font-family:inherit;transition:all 0.12s;min-height:28px;}
+.bdg.ah{background:var(--blue-bg);color:var(--blue-text);border-color:var(--blue-border);}
+.bdg.ac{background:var(--green-bg);color:var(--green-text);border-color:var(--green-border);}
+.bdg.ab{background:var(--amber-bg);color:var(--amber-text);border-color:var(--amber-border);}
+
+.share-box{margin:4px 12px 8px;padding:12px 14px;background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--border);}
+.share-lbl{font-size:12px;color:var(--text2);margin-bottom:8px;}
+.share-note{font-size:11px;color:var(--text3);margin-bottom:8px;line-height:1.5;}
+.copy-btn{font-size:12px;padding:6px 16px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg);color:var(--text2);cursor:pointer;font-family:inherit;transition:all 0.15s;}
+.copy-btn.ok{background:var(--green-bg);color:var(--green-text);border-color:var(--green-border);}
+
+.mhdr{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;}
+.dblock{padding:14px 16px;border-bottom:0.5px solid var(--border);}
+.dname{font-size:14px;font-weight:600;margin-bottom:9px;}
+.mrow{display:flex;gap:10px;margin-bottom:6px;}
+.mtime{font-size:12px;color:var(--text3);min-width:54px;padding-top:1px;}
+.mfood{font-size:13px;color:var(--text2);line-height:1.5;}
+.empty{padding:32px 0;text-align:center;color:var(--text3);font-size:13px;}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);font-size:12px;padding:7px 16px;border-radius:20px;background:var(--text);color:var(--bg);opacity:0;transition:opacity 0.25s;pointer-events:none;z-index:99;white-space:nowrap;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const CATS=[
+  {id:"shina",name:"שינה",icon:"⛺",bar:"#378ADD",items:["אוהל 4 (שינה)","אוהל 4 (ציוד)","אוהל 3 (בנות)","שק שינה (3 יחידות)","שמיכה (3 יחידות)","מזרן יחיד מתנפח (2 יחידות)","מזרן יחיד מתנפח גדול","מזרן זוגי מתנפח","כרית מיוחדת","כרית פשוטה (4 יחידות)"]},
+  {id:"mitbach",name:"מטבח",icon:"🍳",bar:"#639922",items:["כירה + בלוני גז","גזייה לקפה","סיר בשרי","סיר חלבי","מחבת בשרי","מצקת","מרית / כף עץ","מלקחיים","סכין איכותי (2 יחידות)","קרש חיתוך בשרי","קרש חיתוך חלבי","פותחן קופסאות / בקבוקים","סט צלחות בשרי","סט צלחות חלבי","סט סכו\"ם בשרי","סט סכו\"ם חלבי","קערות נירוסטה פרווה (3 יחידות)","כוסות / ספלים","פינג'ן","קומקום","סבון כלים","סקוצ'ים","נייר סופג","ארון מצרכים","מפחות ניילון חד פעמי","נייר כסף","מפה לשולחן קמפינג","גפרורים / מצית","תבלינים בסיסיים (מלח, פלפל, שמן, קפה)","שקיות זבל","צידנית Coleman Xtreme","צידנית קולמביה"]},
+  {id:"matzrachim",name:"מצרכים",icon:"🛒",bar:"#BA7517",items:["פיתות (20)","פסטה (1 ק\"ג)","אורז (1 ק\"ג)","דגני בוקר (2 קופסאות קטנות)","ביצים (18)","חלב","יוגורט","גבינה צהובה","גבינות ממרח","טונה (6-8 קופסאות)","רוטב עגבניות לפסטה","רוטב עגבניות לשקשוקה","עגבניות","מלפפונים","פלפל","בצל","שום","פירות עונה","נקניק גדול (2)","חבילות קבנוסים קטנות (3-4)","פחם","בשר / נקניקיות למנגל","שמן","מלח + פלפל","קפה","סוכר","תה"]},
+  {id:"taoura",name:"תאורה וחשמל",icon:"💡",bar:"#7F77DD",items:["גרילנדה גדולה","גרילנדה קטנה","פנס (4 יחידות)","מנורת אוהל","מנורת יתושים","פרוז'קטור","פרוז'קטור נטען","Bluetti EB3A","מטענים לטלפונים","כבל מאריך לפרוז'קטור","סוללות AAA"]},
+  {id:"hygiene",name:"היגיינה ובריאות",icon:"🧴",bar:"#D4537E",items:["שמפו + מרכך","סבון גוף","משחת שיניים + מברשות שיניים","דאודורנט","נייר טואלט","מגבות (5 יחידות)","מגבונים לחים","קרם הגנה","שפתון הגנה","ספריי יתושים","כובעים (5 יחידות)","ערכת עזרה ראשונה","תרופות בסיסיות (אקמול, איבופרופן)","פלסטרים","תרסיס חרקים לסביבה","מראה קטנה"]},
+  {id:"mahal",name:"מאהל",icon:"🏕️",bar:"#1D9E75",items:["מחצלת (2 יחידות)","רשת צל גדולה","רשת צל קטנה","מוטות לרשת צל","יתדות","חבלים לתלייה","צליה לחוף","כיסא קמפינג (2 יחידות)","ערסל (2 יחידות)","סטייקלטים","סרט סימון","פטיש מעדר","לדרמן","צ'מידג"]},
+  {id:"bidur",name:"בידור וילדים",icon:"🎮",bar:"#378ADD",items:["ארגז משחקי יצירה","קלפים","משחק קופסא","כדור","רמקול בלוטות'"]},
+  {id:"mayim",name:"ציוד מים",icon:"🌊",bar:"#1D9E75",items:["משקפות","מזרוני ים","בוגי קטן","חגורת מצופים לילד","רובי מים","ערסל מים"]}
+];
+const TAFRIT=[
+  {day:"ראשון",meals:[{t:"בוקר",f:"כריכים לדרך"},{t:"צהריים",f:"פיתות עם טונה + סלט"},{t:"ערב",f:"שקשוקה עם ביצים וירקות"}]},
+  {day:"שני",meals:[{t:"בוקר",f:"ביצים מקושקשות + לחם + ירקות"},{t:"ערב",f:"מנגל — סלטים + פיתות"}]},
+  {day:"שלישי",meals:[{t:"בוקר",f:"דגני בוקר + חלב / יוגורט + פירות"},{t:"צהריים",f:"אורז עם ירקות מוקפצים"},{t:"ערב",f:"פסטה ברוטב עגבניות עם גבינה"}]},
+  {day:"רביעי",meals:[{t:"בוקר",f:"ביצים עין + לחם + גבינות"},{t:"הערה",f:"אוכל בחוץ"}]},
+  {day:"חמישי",meals:[{t:"בוקר",f:"לחם + ממרחים + ירקות"},{t:"צהריים",f:"פיתות עם טונה + קבנוסים"}]}
+];
+const FILTERS=["הכל","בבית","באוטו","לקנות","לא טופל"];
+const FMAP={"בבית":"home","באוטו":"car","לקנות":"buy"};
+
+let statuses={};
+let view="main",activeCat=null,activeFilter="הכל";
+
+function encodeState(s){
+  try{return btoa(unescape(encodeURIComponent(JSON.stringify(s))));}catch(e){return "";}
+}
+function decodeState(str){
+  try{return JSON.parse(decodeURIComponent(escape(atob(str))));}catch(e){return {};}
+}
+function loadFromHash(){
+  const h=location.hash.slice(1);
+  if(h){statuses=decodeState(h);}
+}
+function saveToHash(){
+  const encoded=encodeState(statuses);
+  history.replaceState(null,null,"#"+encoded);
+}
+
+function gs(c,i){return statuses[c+":"+i]||null;}
+function ss(c,i,k){
+  const key=c+":"+i;
+  if(statuses[key]===k)delete statuses[key];
+  else statuses[key]=k;
+  saveToHash();
+  render();
+}
+function cp(cat){
+  const done=cat.items.filter((_,i)=>gs(cat.id,i)!==null).length;
+  return{done,total:cat.items.length};
+}
+function totalProg(){
+  let done=0,total=0;
+  CATS.forEach(c=>{const p=cp(c);done+=p.done;total+=p.total;});
+  return{pct:total>0?Math.round(done/total*100):0,done,total};
+}
+
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2000);
+}
+
+function copyShareLink(){
+  const url=location.href;
+  navigator.clipboard.writeText(url).then(()=>{
+    showToast("לינק הועתק!");
+    const btn=document.getElementById("cbtn");
+    if(btn){btn.textContent="הועתק!";btn.classList.add("ok");setTimeout(()=>{btn.textContent="העתק לינק לשיתוף";btn.classList.remove("ok");},2000);}
+  }).catch(()=>{
+    prompt("העתק את הלינק:",url);
+  });
+}
+
+function render(){
+  const root=document.getElementById("app");
+  if(view==="main")root.innerHTML=renderMain();
+  else if(view==="cat")root.innerHTML=renderCat();
+  else root.innerHTML=renderMenu();
+}
+
+function renderMain(){
+  const p=totalProg();
+  return`
+  <div class="hdr">
+    <div class="hdr-top">
+      <span class="hdr-title">ציוד קמפינג</span>
+      <button class="tbtn" onclick="view='menu';render()">תפריט שבועי</button>
+    </div>
+    <div class="hdr-sub">טיול משפחתי · ראשון–חמישי</div>
+    <div class="prog-row">
+      <span class="prog-lbl">התקדמות כללית</span>
+      <div class="prog-track"><div class="prog-fill" style="width:${p.pct}%"></div></div>
+      <span class="prog-pct">${p.pct}%</span>
+    </div>
+  </div>
+  <div class="grid">
+    ${CATS.map(cat=>{
+      const p2=cp(cat);
+      const pct=p2.total>0?Math.round(p2.done/p2.total*100):0;
+      return`<button class="ccard" onclick="activeCat='${cat.id}';view='cat';activeFilter='הכל';render()">
+        <span class="cicon">${cat.icon}</span>
+        <div class="cname">${cat.name}</div>
+        <div class="cbar-t"><div class="cbar-f" style="width:${pct}%;background:${cat.bar}"></div></div>
+        <div class="ccnt">${p2.done} / ${p2.total}</div>
+      </button>`;
+    }).join("")}
+  </div>
+  <div class="share-box">
+    <div class="share-lbl">שיתוף עם האישה</div>
+    <div class="share-note">כל שינוי מתעדכן בלינק. שלח לינק חדש כדי לסנכרן.</div>
+    <button class="copy-btn" id="cbtn" onclick="copyShareLink()">העתק לינק לשיתוף</button>
+  </div>`;
+}
+
+function renderCat(){
+  const cat=CATS.find(c=>c.id===activeCat);
+  const p=cp(cat);
+  const rows=cat.items.map((item,i)=>({item,i,s:gs(cat.id,i)})).filter(({s})=>{
+    if(activeFilter==="הכל")return true;
+    if(activeFilter==="לא טופל")return s===null;
+    return s===FMAP[activeFilter];
+  });
+  return`
+  <div class="ihdr">
+    <button class="back" onclick="view='main';activeFilter='הכל';render()">‹ חזור</button>
+    <span class="ititle">${cat.name}</span>
+    <span class="icnt">${p.done}/${p.total}</span>
+  </div>
+  <div class="filters">
+    ${FILTERS.map(f=>`<button class="fpill${activeFilter===f?" on":""}" onclick="activeFilter='${f}';render()">${f}</button>`).join("")}
+  </div>
+  <div class="ilist">
+    ${rows.length===0?'<div class="empty">אין פריטים</div>':rows.map(({item,i,s})=>`
+      <div class="irow">
+        <span class="iname${s?" done":""}">${item}</span>
+        <div class="bdgs">
+          <button class="bdg${s==="home"?" ah":""}" onclick="ss('${cat.id}',${i},'home')">בבית</button>
+          <button class="bdg${s==="car"?" ac":""}" onclick="ss('${cat.id}',${i},'car')">באוטו</button>
+          <button class="bdg${s==="buy"?" ab":""}" onclick="ss('${cat.id}',${i},'buy')">לקנות</button>
+        </div>
+      </div>`).join("")}
+  </div>`;
+}
+
+function renderMenu(){
+  return`
+  <div class="mhdr">
+    <button class="back" onclick="view='main';render()">‹ חזור</button>
+    <span class="ititle">תפריט שבועי</span>
+  </div>
+  ${TAFRIT.map(d=>`
+    <div class="dblock">
+      <div class="dname">${d.day}</div>
+      ${d.meals.map(m=>`<div class="mrow"><span class="mtime">${m.t}</span><span class="mfood">${m.f}</span></div>`).join("")}
+    </div>`).join("")}`;
+}
+
+loadFromHash();
+render();
+</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js");}</script>
+</body>
+</html>
