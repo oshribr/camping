@@ -116,7 +116,7 @@ const FILTERS=["הכל","בבית","באוטו","לקנות","לא טופל"];
 const FMAP={"בבית":"home","באוטו":"car","לקנות":"buy"};
 
 let statuses={};
-let view="main",activeCat=null,activeFilter="הכל";
+let view="main",activeCat=null,activeFilter="הכל",showImport=false;
 
 function encodeState(s){
   try{return btoa(unescape(encodeURIComponent(JSON.stringify(s))));}catch(e){return "";}
@@ -155,6 +155,20 @@ function showToast(msg){
   const t=document.getElementById("toast");
   t.textContent=msg;t.classList.add("show");
   setTimeout(()=>t.classList.remove("show"),2000);
+}
+
+function importFromUrl(){
+  const input=document.getElementById("iurl");
+  const val=(input?input.value:"").trim();
+  const hash=val.includes("#")?val.split("#")[1]:val;
+  if(!hash){showToast("לינק לא תקין");return;}
+  const decoded=decodeState(hash);
+  if(!decoded||typeof decoded!=="object"){showToast("לינק לא תקין");return;}
+  statuses=decoded;
+  saveToHash();
+  showImport=false;
+  render();
+  showToast("עודכן בהצלחה!");
 }
 
 function copyShareLink(){
@@ -203,9 +217,16 @@ function renderMain(){
     }).join("")}
   </div>
   <div class="share-box">
-    <div class="share-lbl">שיתוף עם האישה</div>
+    <div class="share-lbl">שיתוף</div>
     <div class="share-note">כל שינוי מתעדכן בלינק. שלח לינק חדש כדי לסנכרן.</div>
-    <button class="copy-btn" id="cbtn" onclick="copyShareLink()">העתק לינק לשיתוף</button>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+      <button class="copy-btn" id="cbtn" onclick="copyShareLink()">העתק לינק לשיתוף</button>
+      <button class="copy-btn" onclick="showImport=!showImport;render()">טען לינק</button>
+    </div>
+    ${showImport?`<div style="margin-top:10px;display:flex;gap:6px;">
+      <input id="iurl" type="url" dir="ltr" placeholder="הדבק לינק כאן..." style="flex:1;min-width:0;padding:6px 10px;border-radius:8px;border:0.5px solid var(--border2);background:var(--bg);color:var(--text);font-size:13px;font-family:inherit;outline:none;">
+      <button class="copy-btn" onclick="importFromUrl()">טען</button>
+    </div>`:''}
   </div>`;
 }
 
