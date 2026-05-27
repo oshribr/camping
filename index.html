@@ -126,11 +126,17 @@ function decodeState(str){
 }
 function loadFromHash(){
   const h=location.hash.slice(1);
-  if(h){statuses=decodeState(h);}
+  if(h){
+    statuses=decodeState(h);
+    try{localStorage.setItem("camping",h);}catch(e){}
+  } else {
+    try{const s=localStorage.getItem("camping");if(s)statuses=decodeState(s);}catch(e){}
+  }
 }
 function saveToHash(){
   const encoded=encodeState(statuses);
   history.replaceState(null,null,"#"+encoded);
+  try{localStorage.setItem("camping",encoded);}catch(e){}
 }
 
 function gs(c,i){return statuses[c+":"+i]||null;}
