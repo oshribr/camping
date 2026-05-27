@@ -218,7 +218,7 @@ function renderMain(){
         <span class="cicon">${cat.icon}</span>
         <div class="cname">${cat.name}</div>
         <div class="cbar-t"><div class="cbar-f" style="width:${pct}%;background:${cat.bar}"></div></div>
-        <div class="ccnt">${p2.done} / ${p2.total}</div>
+        <div class="ccnt" dir="ltr">${p2.done} / ${p2.total}</div>
       </button>`;
     }).join("")}
   </div>
@@ -248,7 +248,7 @@ function renderCat(){
   <div class="ihdr">
     <button class="back" onclick="view='main';activeFilter='הכל';render()">‹ חזור</button>
     <span class="ititle">${cat.name}</span>
-    <span class="icnt">${p.done}/${p.total}</span>
+    <span class="icnt" dir="ltr">${p.done}/${p.total}</span>
   </div>
   <div class="filters">
     ${FILTERS.map(f=>`<button class="fpill${activeFilter===f?" on":""}" onclick="activeFilter='${f}';render()">${f}</button>`).join("")}
