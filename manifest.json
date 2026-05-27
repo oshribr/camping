@@ -2,7 +2,7 @@
   "name": "ציוד קמפינג",
   "short_name": "קמפינג",
   "description": "רשימת ציוד לטיול משפחתי",
-  "start_url": "/",
+  "start_url": "/camping/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
